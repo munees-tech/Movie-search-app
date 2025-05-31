@@ -20,7 +20,7 @@ Backend: Node.js, Express.js, JWT, bcryptjs
 
 Database: MongoDB (Mongoose ODM)
 
-Auth: JWT + Cookies or Authorization Headers
+Auth: JWT + Cookies
 
 
 project Structure
