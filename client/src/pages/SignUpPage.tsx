@@ -1,8 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useUserStore } from "../stores/useUserStore.js";
 
 const SignUpPage = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    userName:string;
+    password:string;
+    email:string;
+  }>({
     userName:"",
     password:"",
     email:"",
@@ -10,7 +14,7 @@ const SignUpPage = () => {
 
   const { signUp } = useUserStore();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     signUp(formData);
   };

@@ -1,11 +1,20 @@
-import gendrateToken from "../utils/gendrateToken.js";
+import gendrateToken from "../utils/gendrateToken";
 import bcrypt from "bcryptjs";
-import User from "../models/user.model.js";
-import cloudinary from "../lib/cloudinary.js";
+import User from "../models/user.model";
+import cloudinary from "../lib/cloudinary";
+import { Request, Response } from "express";
 
-export const signUp = async (req, res) => {
+interface AuthRequest extends Request {
+  user?: Iuser & { _id: string };
+}
+
+export const signUp = async (req: Request, res: Response) => {
   try {
-    const { userName, password, email } = req.body;
+    const { userName, password, email } = req.body as {
+      userName: string;
+      password: string;
+      email: string;
+    };
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: "Invalid email format" });
@@ -43,11 +52,11 @@ export const signUp = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body as {email:string , password:string};
     const user = await User.findOne({ email });
-    const isPassword = await bcrypt.compare(password, user.password || "");
+    const isPassword = user && (await bcrypt.compare(password, user.password || ""));
     if ((!user, !isPassword)) {
       return res.status(404).json({ message: "invaild username or password" });
     }
@@ -62,7 +71,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async (req, res) => {
+export const logout = async (req: Request, res: Response) => {
   try {
     res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logout Succesfully" });
@@ -72,17 +81,17 @@ export const logout = async (req, res) => {
   }
 };
 
-export const updateProfile = async (req, res) => {
+export const updateProfile = async (req: AuthRequest, res: Response) => {
   try {
     const { profilePic } = req.body;
-    const userId = req.user._id;
+    const userId = req.user?._id;
     if (!profilePic) {
       return res.status(400).json({ message: "Profilepic is requried" });
     }
-    const uploaderResponce = await cloudinary.uploader.upload(profilePic);
+    const uploaderResponse = await cloudinary.uploader.upload(profilePic);
     const updateUser = await User.findByIdAndUpdate(
       userId,
-      { profilePic: uploaderResponce.secure_url },
+      { profilePic: uploaderResponse.secure_url },
       { new: true }
     );
     res.status(200).json({ updateUser });
@@ -92,9 +101,9 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-export const getMe = async (req, res) => {
+export const getMe = async (req: AuthRequest, res: Response) => {
   try {
-    const user = await User.findOne({ _id: req.user._id }).select("-password");
+    const user = await User.findOne({ _id: req.user?._id }).select("-password");
     res.status(200).json(user);
   } catch (error) {
     console.log(`Error in getMeController ${error}`);

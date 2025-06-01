@@ -5,8 +5,8 @@ import {
   logout,
   getMe,
   updateProfile,
-} from "../controllers/auth.controller.js";
-import productRoute from "../middlewere/auth.middlewere.js";
+} from "../controllers/auth.controller.ts";
+import productRoute from "../middlewere/auth.middlewere";
 
 const router = express.Router();
 

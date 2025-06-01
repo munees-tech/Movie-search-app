@@ -9,12 +9,12 @@ const UserSchma = new mongoose.Schema(
     },
     password: {
       type: String,
-      requried: true,
+      required: true,
       minlength: [6, "password should be 6 character"],
     },
     email: {
       type: String,
-      requried: true,
+      required: true,
       unique: true,
     },
     profilePic: {

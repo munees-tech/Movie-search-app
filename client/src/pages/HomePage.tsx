@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../stores/useUserStore.js";
-import { CiUser } from "react-icons/ci";
+
+interface Movie {
+  id: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+}
 
 const HomePage = () => {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Movie[] | null>([]);
   const { user } = useUserStore();
   const [searchMovie, setSearchMovie] = useState("");
   const navigate = useNavigate();
@@ -32,9 +38,10 @@ const HomePage = () => {
     fetchMovies();
   }, []);
 
-  const handleInputChange = (e) => setSearchMovie(e.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchMovie(e.target.value);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     fetchMovies(searchMovie.trim());
   };
@@ -44,7 +51,7 @@ const HomePage = () => {
       {/* Title */}
       <div className="flex items-center justify-end mt-8 mb-6 px-8">
         <img
-          src={user.profilePic || "/avatar.png"}
+          src={user?.profilePic ? user.profilePic : "/avatar.png"}
           alt="Profile img"
           onClick={() => navigate("/me")}
           className="size-11 rounded-full cursor-pointer"

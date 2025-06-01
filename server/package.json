@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
   },
   "keywords": [],
   "author": "",
-  "type": "module",
   "license": "ISC",
   "description": "",
   "dependencies": {
@@ -21,5 +20,12 @@
     "mongoose": "^8.15.1",
     "movie-app": "file:..",
     "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.29",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
   }
 }

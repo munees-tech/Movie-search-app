@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
+import {Response} from "express"
 
-const gendrateToken = (userId, res) => {
+const gendrateToken = (userId:string, res:Response) => {
   const token = jwt.sign({ userId }, process.env.JWT_SECREATE, {
     expiresIn: "15d",
   });

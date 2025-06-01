@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useUserStore } from "../stores/useUserStore.js";
 import { CiLogout } from "react-icons/ci";
 import { toast } from "react-hot-toast";
@@ -9,23 +9,23 @@ import { MdOutlineMailOutline } from "react-icons/md";
 
 const ProfilePage = () => {
   const { user, updateProfile } = useUserStore();
-  const [selectImg, setSelectImg] = useState(null);
+  const [selectImg, setSelectImg] = useState<string | null>(null);
   const { logout } = useUserStore();
-  const handleLogout = (e) => {
+  const handleLogout = (e:React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     logout();
   };
 
-  const handleImgaeUpload = async (e) => {
-    const file = e.target.files[0];
+  const handleImgaeUpload = async (e:React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = async () => {
-      const base64Img = reader.result;
+      const base64Img = reader.result as string;
       setSelectImg(base64Img);
       try {
-        const res = await updateProfile({ profilePic: base64Img });
+        await updateProfile({ profilePic: base64Img });
         toast.success("Profile Update Succesfully");
       } catch (error) {
         toast.error(error.message);

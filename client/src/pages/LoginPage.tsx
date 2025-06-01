@@ -1,22 +1,22 @@
 import { useUserStore } from "../stores/useUserStore.js";
-import { useState } from "react";
+import React, { useState } from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineMailOutline } from "react-icons/md";
-import Loading from "../components/Loading.jsx"
-import {Link} from "react-router-dom"
+import Loading from "../components/Loading.js";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const { login , isLoading} = useUserStore();
+  const { login, isLoading } = useUserStore();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login({ email, password });
   };
 
-  if(isLoading) return <Loading />
+  if (isLoading) return <Loading />;
   return (
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-b from-gray-900 via-gray-800 to-black">
       <form
@@ -58,7 +58,14 @@ const LoginPage = () => {
         >
           Login
         </button>
-        <p className=" text-gray-300 text-center mt-8"><Link to={'/signup'}>Dont have an account ? <a className="ml-1.5 text-blue-400 underline">Create account</a></Link></p>
+        <div className="text-center text-gray-200">
+          <p className="text-base-content/60 mt-4">
+            Don&apos;t have an account?{" "}
+            <Link to="/signup" className="link link-primary">
+              Create account
+            </Link>
+          </p>
+        </div>
       </form>
     </div>
   );

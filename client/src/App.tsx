@@ -4,10 +4,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import { Toaster } from "react-hot-toast";
-import { useUserStore } from "./stores/useUserStore.js";
+import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
-import Loading from "./components/Loading.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx"
+import Loading from "./components/Loading";
+import ProfilePage from "./pages/ProfilePage"
 
 const App = () => {
   const { user , chackAuth , chackingAuth } = useUserStore();

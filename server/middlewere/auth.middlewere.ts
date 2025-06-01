@@ -1,7 +1,14 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.model.js";
+import User from "../models/user.model";
+import {Request , Response , NextFunction} from "express"
 
-const productRoute = async (req, res, next) => {
+
+declare module "express" {
+  interface Request {
+    user?:any
+  }
+}
+const productRoute = async (req:Request, res:Response, next:NextFunction) => {
   try {
     const token = req.cookies.jwt;
   

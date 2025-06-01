@@ -2,7 +2,24 @@ import axios from "../utils/axios.js";
 import { create } from "zustand";
 import { toast } from "react-hot-toast";
 
-export const useUserStore = create((set) => ({
+interface User {
+  userName: string;
+  email: string;
+  profilepic: string;
+}
+
+interface UserStore {
+  isLoading: boolean;
+  user: User | null;
+  chackingAuth: boolean;
+  signUp:(data:{userName:string,password:string,email:string}) => Promise<void>;
+  login:(data: {email:string , password:string}) => Promise<void>;
+  logout:()=>Promise<void>;
+  updateProfile:(data:{profilePic:string}) => Promise<void>;
+  chackAuth:() => Promise<void>
+}
+
+export const useUserStore = create<UserStore>((set) => ({
   isLoading: false,
   user: null,
   chackingAuth: false,
@@ -17,7 +34,7 @@ export const useUserStore = create((set) => ({
       });
       set({ user: res.data });
       toast.success("Account created succesfully");
-    } catch (error) {
+    } catch (error:any) {
       toast.error(error.message);
     } finally {
       set({ isLoading: false });
@@ -30,7 +47,7 @@ export const useUserStore = create((set) => ({
       const res = await axios.post("/auth/login", { email, password });
       set({ user: res.data });
       toast.success("Login Succesfull");
-    } catch (error) {
+    } catch (error:any) {
       toast.error(error.message);
     } finally {
       set({ isLoading: false });
@@ -43,7 +60,7 @@ export const useUserStore = create((set) => ({
       await axios.post("/auth/logout");
       set({ user: null });
       toast.success("Logout Succesfull");
-    } catch (error) {
+    } catch (error:any) {
       toast.error(error.message);
     } finally {
       set({ isLoading: false });
@@ -55,7 +72,7 @@ export const useUserStore = create((set) => ({
     try {
       const res = await axios.put("/auth/update-profile", { profilePic });
       set({ user: res.data, isLoading: false });
-    } catch (error) {
+    } catch (error:any) {
       toast.error(error.message);
     } finally {
       set({ isLoading: false });
@@ -67,7 +84,7 @@ export const useUserStore = create((set) => ({
     try {
       const res = await axios.get("/auth/me");
       set({ user: res.data, chackingAuth: false });
-    } catch (error) {
+    } catch (error:any) {
       toast.error(error.message);
     } finally {
       set({ isLoading: false });

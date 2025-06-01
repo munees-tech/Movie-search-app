@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
-import connectDb from "./lib/db.js";
+import connectDb from "../lib/db";
 import cookieParser from "cookie-parser";
-import authRoute from "./routes/auth.route.js";
+import authRoute from "../routes/auth.route";
 import cors from "cors";
 import path from "path";
 
@@ -15,7 +15,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
+app.use(express.json({limit:"10mb"}));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoute);

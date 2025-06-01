@@ -2,10 +2,28 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "./Loading";
 
+interface Genre {
+  id: number;
+  name: string;
+}
+
+interface Movie {
+  id: number;
+  title: string;
+  release_date: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  overview: string;
+  vote_average: number;
+  runtime: number;
+  genres?: Genre[];
+  genre_ids?: number[];
+}
+
 const Movies = () => {
   const apiKey = "a071d3520a50cb268394a221b6696c24";
-  const { id } = useParams();
-  const [movie, setMovie] = useState(null);
+  const { id } = useParams<{ id: string }>();
+  const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -31,7 +49,7 @@ const Movies = () => {
 
   const backdropUrl = movie.backdrop_path
     ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
-    : null;
+    : undefined;
 
   return (
     <div
@@ -74,7 +92,7 @@ const Movies = () => {
             <span className="ml-2">Schore</span>
             {movie.vote_average >= 7
               ? "🙂"
-              : movie.vote_average >=5
+              : movie.vote_average >= 5
               ? "😐"
               : "😞"}
           </div>
